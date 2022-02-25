@@ -6,12 +6,14 @@ import {
   Routes,
   Route,
   useNavigate,
+  Navigate,
 } from "react-router-dom";
 
 function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Navigate replace to="/login" />} />
         <Route path="/login" element={<Login />} />
         <Route path="/welcome" element={<Welcome />} />
       </Routes>
@@ -32,8 +34,8 @@ function Login() {
         password,
       };
       const response = await api.post("/sign-in", user);
-      localStorage.setItem("username", response.data.username);
-      localStorage.setItem("password", response.data.password);
+      localStorage.setItem("username", response.data[0].username);
+      localStorage.setItem("password", response.data[0].password);
       navigate("/welcome");
     } catch (err) {
       if (err) {
@@ -79,6 +81,14 @@ function Login() {
 }
 
 function Welcome() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const username = localStorage.getItem("username");
+
+    if (!username) {
+      navigate("/login");
+    }
+  });
   return <h1>Bem vindo ao magalu</h1>;
 }
 
