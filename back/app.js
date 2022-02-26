@@ -27,7 +27,7 @@ app.post("/sign-in", (request, response) => {
       if (results.length > 0) {
         return response.status(201).json(results);
       } else {
-        return response.status(500).json({ message: "Senha o email errados" });
+        return response.status(500).json({ message: "Senha e/ou email errados" });
       }
     }
   );
